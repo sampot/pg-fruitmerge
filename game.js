@@ -1,0 +1,6 @@
+export const TIERS=["🍒","🍓","🍊","🍎","🍐","🍑","🍍","🍉"];
+export const radius=t=>14+t*4;
+export function newGame(){return{fruits:[],next:0,score:0,over:false,id:1}}
+export function dropFruit(s,x){if(s.over)return s;return{...s,fruits:[...s.fruits,{id:s.id,x:Math.max(20,Math.min(280,x)),y:25,vx:0,vy:0,tier:s.next,settled:0}],next:Math.floor(Math.random()*3),id:s.id+1}}
+export function isOverflow(fs,line=45){return fs.some(f=>f.y-radius(f.tier)<line&&f.settled>.5)}
+export function stepWorld(s,dt=.016){let fs=s.fruits.map(f=>({...f,vy:f.vy+280*dt,y:f.y+(f.vy+280*dt)*dt,settled:f.settled+dt}));for(const f of fs){const r=radius(f.tier);if(f.y+r>390){f.y=390-r;f.vy*=-.18;if(Math.abs(f.vy)<8)f.vy=0}if(f.x-r<0)f.x=r;if(f.x+r>300)f.x=300-r}let score=s.score;outer:for(let i=0;i<fs.length;i++)for(let j=i+1;j<fs.length;j++){const a=fs[i],b=fs[j],d=Math.hypot(a.x-b.x,a.y-b.y),min=radius(a.tier)+radius(b.tier);if(d<min){if(a.tier===b.tier&&a.tier<TIERS.length-1){fs.splice(j,1);fs.splice(i,1,{id:Math.max(a.id,b.id),x:(a.x+b.x)/2,y:(a.y+b.y)/2,vx:0,vy:-20,tier:a.tier+1,settled:0});score+=10*2**a.tier;break outer}const nx=(b.x-a.x)/(d||1),ny=(b.y-a.y)/(d||1),push=(min-d)/2;a.x-=nx*push;a.y-=ny*push;b.x+=nx*push;b.y+=ny*push;a.vy*=.7;b.vy*=.7}}return{...s,fruits:fs,score,over:isOverflow(fs)}}

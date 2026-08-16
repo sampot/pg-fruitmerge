@@ -1,0 +1,3 @@
+import {describe,it,expect} from "vitest";
+import {newGame,dropFruit,stepWorld,radius,isOverflow} from "./game.js";
+describe("fruit merge",()=>{it("drops the queued tier",()=>expect(dropFruit(newGame(),100).fruits[0].tier).toBe(0));it("merges equal touching fruits",()=>{const s={...newGame(),fruits:[{id:1,x:100,y:100,vx:0,vy:0,tier:0},{id:2,x:110,y:100,vx:0,vy:0,tier:0}]};const n=stepWorld(s,.016);expect(n.fruits).toHaveLength(1);expect(n.fruits[0].tier).toBe(1)});it("grows by tier",()=>expect(radius(4)).toBeGreaterThan(radius(0)));it("detects settled overflow",()=>expect(isOverflow([{y:20,tier:3,settled:1}],40)).toBe(true));});
