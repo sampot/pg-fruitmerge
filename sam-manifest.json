@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "rev": "290a7ac",
+  "files": [
+    "app.js",
+    "assets/apple.png",
+    "assets/cherries.png",
+    "assets/orange.png",
+    "assets/pear.png",
+    "assets/pineapple.png",
+    "assets/strawberry.png",
+    "assets/watermelon.png",
+    "functions.js",
+    "game.js",
+    "index.html",
+    "styles.css"
+  ]
+}
